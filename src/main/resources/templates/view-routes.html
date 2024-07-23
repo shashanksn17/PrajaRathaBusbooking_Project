@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Available Routes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"], input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"], button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        input[type="submit"]:hover, button:hover {
+            background-color: #45a049;
+        }
+
+        .card {
+            height: auto;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .card img {
+            height: 150px;
+            width: 150px;
+            border-radius: 8px;
+        }
+
+        .card h3, .card h4, .card h5 {
+            margin: 10px 0;
+        }
+
+        .card form {
+            margin-top: 20px;
+        }
+
+        .card form input[type="number"] {
+            width: 60px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        a {
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card" th:each="route : ${routes}">
+            <img th:alt="${route.bus.name}" th:src="${route.bus.imageLink}">
+            <h3 th:text="${route.bus.name}"></h3>
+            <h3 th:text="'Available Seats: ' + ${route.bus.seat}"></h3>
+            <h4 th:text="'From: ' + ${from}"></h4>
+            <h4 th:text="'To: ' + ${to}"></h4>
+
+            <th:block th:each="station : ${route.stations}">
+                <th:block th:if="${station.name == from}">
+                    <h4 th:text="'Departure Time: ' + ${station.time}"></h4>
+                </th:block>
+                <th:block th:if="${station.name == to}">
+                    <h4 th:text="'Arrival Time: ' + ${station.time}"></h4>
+                </th:block>		
+            </th:block>
+            
+            <h5 th:text="'Ticket Price: ' + ${@calculator.calculatePrice(from, to, route)} + ' ₹'"></h5>
+
+            <form action="/book-ticket" method="post">
+                <input type="number" name="seat" value="1" min="1" max="${route.bus.seat}">
+                <input type="hidden" name="from" th:value="${from}">
+                <input type="hidden" name="to" th:value="${to}">
+                <input type="hidden" name="routeId" th:value="${route.id}">
+                <input type="submit" value="Book">
+            </form>
+        </div>
+    </div>
+    <a href="/book"><button>Back</button></a>
+</body>
+</html>

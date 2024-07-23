@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Sign Up - Prajaratha</title>
+    <link rel="stylesheet" href="/css/customersignup.css">
+</head>
+<body>
+    <header>
+ 		<nav>
+			<a href="/"><div class="logo">Prajaratha</div></a>
+			<ul class="nav-links">
+				<li><a href="/">Home</a></li>
+				<li><a href="/view-routes">View Bus Routes</a></li>
+			</ul>
+			<th:block th:if="${session.customer==null && session.agency==null}">
+				<div class="auth-buttons">
+					<a href="/login"><button class="login-btn">Login</button></a> <a
+						href="/signup"><button class="signup-btn">Sign Up</button></a>
+				</div>
+			</th:block>
+			<th:block th:if="${session.customer}">
+			<ul class="nav-links">
+				<li><a href="/customer/view-bookings">View Previous Bookings</a></li>
+				<li><a href="/logout">Logout</a></li>
+			</ul>
+			</th:block>
+			<th:block th:if="${session.agency}">
+				<ul class="nav-links">
+				<li><a href="/agency/add-bus">Add Bus</a></li>
+				<li><a href="/agency/add-route">Add Route</a></li>
+				<li><a href="/agency/manage-route">Manage Routes</a></li>
+				<li><a href="/agency/view-customers">View Customers</a></li>
+				<li><a href="/logout">Logout</a></li>
+			</ul>
+			</th:block>
+		</nav>
+    </header>
+
+    <main>
+        <div class="signup-container">
+            <h1>Customer Sign Up</h1>
+            <th:block th:insert="~{message.html}"></th:block>
+            <form action="/customer/signup" method="post" th:object="${customer}">
+                <div class="form-container">
+                    <div class="input-group">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" th:field="*{name}">
+                        <span th:errors="*{name}"></span>
+                    </div>  
+                    <div class="input-group">
+                        <label for="address">Address:</label>
+                        <textarea id="address" rows="3" name="address" th:field="*{address}"></textarea>
+                        <span th:errors="*{address}"></span>
+                    </div>
+                    <div class="input-group">
+                        <label for="mobile">Mobile:</label>
+                        <input type="number" id="mobile" name="mobile" th:field="*{mobile}">
+                        <span th:errors="*{mobile}"></span>
+                    </div>
+                    <div class="input-group">
+                        <label for="email">Email:</label>
+                        <input type="text" id="email" name="email" th:field="*{email}">
+                        <span th:errors="*{email}"></span>
+                    </div>
+                    <div class="input-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" th:field="*{password}">
+                        <span th:errors="*{password}"></span>
+                    </div>
+                    <div class="input-group">
+                        <label for="cpassword">Confirm Password:</label>
+                        <input type="password" id="cpassword" name="cpassword" th:field="*{cpassword}">
+                        <span th:errors="*{cpassword}"></span>
+                    </div>
+                    <div class="input-group">
+                        <label for="dob">Date of Birth:</label>
+                        <input type="date" id="dob" name="dob" th:field="*{dob}">
+                        <span th:errors="*{dob}"></span>
+                    </div>
+                    <div class="input-group">
+                        <label>Gender:</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="gender" value="male" th:field="*{gender}"> Male</label>
+                            <label><input type="radio" name="gender" value="female" th:field="*{gender}"> Female</label>
+                        </div>
+                        <span th:errors="*{gender}"></span>
+                    </div>
+                </div>
+                <button type="submit" class="signup-btn">Sign Up</button>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Prajaratha. All rights reserved.</p>
+    </footer>
+</body>
+</html>

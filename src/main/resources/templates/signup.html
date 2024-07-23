@@ -4,44 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Signup - Prajaratha</title>
-    <link rel="stylesheet" href="css/signup.css">
+    <link rel="stylesheet" href="/css/signup.css">
 </head>
 <body>
     <header>
-        <nav>
-            <div class="logo">Prajaratha</div>
-            <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="#">Buses</a></li>
-                <li><a href="#">Contact</a></li>
-                <li><a href="#">About</a></li>
-            </ul>
-        </nav>
+     		<nav>
+			<a href="/"><div class="logo">Prajaratha</div></a>
+			<ul class="nav-links">
+				<li><a href="/">Home</a></li>
+				<li><a href="/view-routes">View Bus Routes</a></li>
+			</ul>
+			<th:block th:if="${session.customer==null && session.agency==null}">
+				<div class="auth-buttons">
+					<a href="/login"><button class="login-btn">Login</button></a> <a
+						href="/signup"><button class="signup-btn">Sign Up</button></a>
+				</div>
+			</th:block>
+			<th:block th:if="${session.customer}">
+			<ul class="nav-links">
+				<li><a href="/logout">View Previous Bookings</a></li>
+				<li><a href="/logout">Logout</a></li>
+			</ul>
+			</th:block>
+			<th:block th:if="${session.agency}">
+				<ul class="nav-links">
+				<li><a href="/add-bus">Add Bus</a></li>
+				<li><a href="/add-route">Add Route</a></li>
+				<li><a href="/manage-route">Manage Routes</a></li>
+				<li><a href="/view-customers">View Customers</a></li>
+				<li><a href="/logout">Logout</a></li>
+			</ul>
+			</th:block>
+		</nav>
     </header>
 
     <main>
         <div class="signup-container">
             <h1>Sign Up</h1>
-            <form action="#" method="POST">
+            <form action="/signup" method="POST">
                 <div class="input-group">
-                    <label for="first-name">First Name</label>
-                    <input type="text" id="first-name" name="first-name" required>
-                </div>
-                <div class="input-group">
-                    <label for="last-name">Last Name</label>
-                    <input type="text" id="last-name" name="last-name" required>
-                </div>
-                <div class="input-group">
-                    <label for="mobile">Mobile Number</label>
-                    <input type="tel" id="mobile" name="mobile" required pattern="[0-9]{10}">
-                </div>
-                <div class="input-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div class="input-group">
-                    <label for="dob">Date of Birth</label>
-                    <input type="date" id="dob" name="dob" required>
+                    <label for="role">Select a Role : </label>
+                    <label>Customer:</label> <input type="radio"  name="role" value="customer" required> 
+                    Agent: <input type="radio"  name="role" value="agency" required> 
                 </div>
                 <button type="submit" class="signup-btn">Sign Up</button>
             </form>

@@ -1,43 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Prajaratha</title>
-    <link rel="stylesheet" href="css/login.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login - Prajaratha</title>
+<link rel="stylesheet" href="/css/login.css">
 </head>
 <body>
-    <header>
-        <nav>
-            <div class="logo">Prajaratha</div>
-            <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="#">Buses</a></li>
-                <li><a href="#">Contact</a></li>
-                <li><a href="#">About</a></li>
-            </ul>
-        </nav>
-    </header>
+	<header>
+		<nav>
+			<a href="/"><div class="logo">Prajaratha</div></a>
+			<ul class="nav-links">
+				<li><a href="/">Home</a></li>
+				<li><a href="/view-routes">View Bus Routes</a></li>
+			</ul>
+			<th:block th:if="${session.customer==null && session.agency==null}">
+				<div class="auth-buttons">
+					<a href="/login"><button class="login-btn">Login</button></a> <a
+						href="/signup"><button class="signup-btn">Sign Up</button></a>
+				</div>
+			</th:block>
+			<th:block th:if="${session.customer}">
+			<ul class="nav-links">
+				<li><a href="/customer/view-bookings">View Previous Bookings</a></li>
+				<li><a href="/logout">Logout</a></li>
+			</ul>
+			</th:block>
+			<th:block th:if="${session.agency}">
+				<ul class="nav-links">
+				<li><a href="/agency/add-bus">Add Bus</a></li>
+				<li><a href="/agency/add-route">Add Route</a></li>
+				<li><a href="/agency/manage-route">Manage Routes</a></li>
+				<li><a href="/agency/view-customers">View Customers</a></li>
+				<li><a href="/logout">Logout</a></li>
+			</ul>
+			</th:block>
+		</nav>
+	</header>
 
-    <main>
-        <div class="login-container">
-            <h1>Login</h1>
-            <form action="#" method="POST">
-                <div class="input-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div class="input-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
-                <button type="submit" class="login-btn">Login</button>
-            </form>
-        </div>
-    </main>
+	<main>
+		<div class="login-container">
+			<h1>Login</h1>
+			<th:block th:insert="~{message.html}"></th:block>
+			<form action="/login" method="post">
+				<div class="input-group">
+					<label for="email">Email</label> <input type="email" id="email"
+						name="email-phone" required>
+				</div>
+				<div class="input-group">
+					<label for="password">Password</label> <input type="password"
+						id="password" name="password" required>
+				</div>
+				<button type="submit" class="login-btn">Login</button>
+			</form>
+		</div>
+	</main>
 
-    <footer>
-        <p>&copy; 2024 Prajaratha. All rights reserved.</p>
-    </footer>
+	<footer>
+		<p>&copy; 2024 Prajaratha. All rights reserved.</p>
+	</footer>
 </body>
 </html>
